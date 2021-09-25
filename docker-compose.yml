@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.5
+    restart: always
+    environment:
+      MYSQL_DATABASE: bills
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - 33066:3306
+    volumes:
+      - .dbdata:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
