@@ -23,9 +23,12 @@ Then we copy the _requirements.txt_ file from the host machine to the container 
 
 Now we move to our _docker-compose.yml_ file (shown below). We first specify the version of _docker-compose_ we want to use. Then we create our _services_ that we want to run.
 
-- _app_ is our Django project/ We make sure to include the _depends_on_ the _db_ (MariaDB) so that Django will not start/run unsless our MariaDB service is running.
-- _db_ is our MariaDB database. We must make sure to include the database we will use along with username & passwords. To ensure that we are able to locate the database files on our host machine, we include the _volumes_ to map from the container to a folder on our host machine called _.dbdata_
--_adminer_ This service is not neccessary but will allow the user to view their database through a web browser. You can access the database through your own client. If so, feel free to remove _adminer_ from the file.
+- _app_ is our Django project.
+  - We make sure to include the *depends_on* the _db_ (MariaDB) so that Django will not start/run unsless our MariaDB service is running.
+- _db_ is our MariaDB database.
+  - We must make sure to include the database we will use along with username & passwords. To ensure that we are able to locate the database files on our host machine, we include the _volumes_ to map from the container to a folder on our host machine called _.dbdata_
+- _adminer_ This service is not neccessary but will allow the user to view their database through a web browser.
+  - You can access the database through your own client. If so, feel free to remove _adminer_ from the file.
 
 ![docker-compose-Example](./images/docker-compose.png)
 
@@ -90,7 +93,7 @@ For this example, I used the following:
 - Username: admin1
 - Email address: admin1@example.com
 - Password: amdin1
-    - **Note:** I received the error in red because the entered password was exactly the same as the username, for production enviornments, a stronger password is reccommended.
+  - **Note:** I received the error in red because the entered password was exactly the same as the username, for production enviornments, a stronger password is reccommended.
 
 If your information was entered correctly you will receive the message: _**Superuser created successfully**_.
 
