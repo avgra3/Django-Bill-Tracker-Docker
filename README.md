@@ -9,6 +9,10 @@
 
 ## Setup Guide
 
+**_Note: if you want to just use the base files, just run the script below in your terminal, in the same directory as your [docker-compose.yml](docker-compose.yml)_**
+
+    docker-compose up -d --force-recreate
+
 ### Setting up Dockerfile and Docker-Compose
 
 First, you will need to set up your _Dockerfile_ as this will be used to create your container.
