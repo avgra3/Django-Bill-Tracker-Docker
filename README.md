@@ -9,6 +9,10 @@
 
 ## Setup Guide
 
+_**Note:** if you want to just use the base files, just run the script below in your terminal, in the same directory as your [docker-compose.yml](docker-compose.yml)_
+
+    docker-compose up -d --force-recreate
+
 ### Setting up Dockerfile and Docker-Compose
 
 First, you will need to set up your _Dockerfile_ as this will be used to create your container.
@@ -109,3 +113,13 @@ Once the above has completed, we will now be ready to run our container.
     docker-compose up
 
 Now on your local machine, you will be able to navigate to your website at the following: _**localhost:8000**_, or whatever port you used in your _[docker-compose.yml](docker-compose.yml)_ file.
+
+## Connecting to MariaDB
+
+If you would prefer not to use adminer as your method of working with the database you will need the IP and Port:
+
+- IP: 12.0.0.1
+- Port: 33066
+- Database: bills
+
+From this connection you will be able to run other SQL scripts.
