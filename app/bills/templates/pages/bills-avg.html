@@ -2,7 +2,7 @@
 {% block content %}
 {% load static %}
 <head>
-    <title>Monthly Breakdown</title>
+    <title>Monthly Averages</title>
 </head>
 <body>
     <h1>Running Average: ${{runningAvg.Ravg|floatformat:2}}</h1>
@@ -113,6 +113,8 @@
     <div>
         <!-- Link to home page -->
         <a class="btn" href="{% url 'pages/home.html' %}">To Home page.</a>
+        <!-- Link to monthly breakdown page -->
+        <a class="btn" href="{% url 'bills-mb' %}">To Monthly Breakdown page.</a>
         <!--This js script is if we are at the bottom of the page and want to easily scrool to the top-->
         <a class="section2" href="#">Scroll to top</a>
     </div>

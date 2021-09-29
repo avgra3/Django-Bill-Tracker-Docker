@@ -32,4 +32,10 @@ def AverageBillPaidView(request):
 
     return render(request = request, template_name='pages/bills-avg.html', context=context)
 
-
+# Monthly Breakdown view
+# Create a view that summarizes the bills table
+def MonthlyBreakdownListView(request):
+    # Will return a grouped breakdown for each month
+    context = BillPaid.objects.annotate(month=TruncMonth('paidDate')).values('month').annotate(sums=Sum('totalPaid')).values('month','sums').order_by('month')
+    
+    return render(request = request, template_name='pages/bills-mb.html', context={"mb": context})
