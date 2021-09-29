@@ -123,3 +123,13 @@ If you would prefer not to use adminer as your method of working with the databa
 - Database: bills
 
 From this connection you will be able to run other SQL scripts.
+
+## Current Development
+
+----------------------------------------------
+
+For current development, we want to accomplish the below
+
+1. Adding a monthly breakdown section with plots
+2. Adding a form for entering new data
+3. Adding a user sign-in page to enter and use the site.
