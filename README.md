@@ -136,7 +136,7 @@ For current development, we want to accomplish the below
 
 ----------------------------------------------
 
-### Accessing the django shell
+### Monthly Breakdown
 
 We want to access the shell of our project in order to work to determine to work with our project in an interactive enviornment use the below
 
@@ -175,3 +175,19 @@ Now we are ready to create our html template for the monthly breakdown. For ease
 ![MB-web-page](/images/mb-webpage.png)
 
 **_Note:_** Your view may differ based on your entered data. As we can see from the table, there are only two entries.
+
+----------------------------------------------
+
+### Adding Forms
+
+To add a form that uses the input of our models, we can create a new file in our app called [forms.py](/app/bills/forms.py). In this file we can specify which model we want to use. In our case, we want to be able to add _**new**_ bills, carriers, and products.
+
+![forms.py](/images/create-forms-file.png)
+
+We specify that we want to add all fields into our form.
+
+Note that for all fields in the model that have _**editable=False**, the field will not appear on our form.
+
+In our case, the [views.py](/app/bills/views.py) file will look like the below (make sure to import the form into your views file or else you will get an error when running the app).
+
+![Form-Views](/images/create-forms-view.png)

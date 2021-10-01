@@ -4,9 +4,15 @@ from django.core import serializers
 from django.views.generic import ListView
 from django.db.models import Sum, Count, Avg, Q, Count, Case, When, F
 from django.db.models.functions import TruncMonth
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 # Models created
 from .models import BillPaid, Carrier, Bill
+
+# Forms created
+from .forms import NewBillForm, NewCarrierForm, NewProductForm
 
 # Homepage view.
 def homepage(request):
@@ -39,3 +45,18 @@ def MonthlyBreakdownListView(request):
     context = BillPaid.objects.annotate(month=TruncMonth('paidDate')).values('month').annotate(sums=Sum('totalPaid')).values('month','sums').order_by('month')
     
     return render(request = request, template_name='pages/bills-mb.html', context={"mb": context})
+
+# New Bill Form view
+def NewBillView(request):
+    context = NewBillForm()
+    return render(request = request, template_name='pages/bills-bill-form.html', context={"form":context})
+
+# New Carrier Form view
+def NewCarrierView(request):
+    context = NewCarrierForm()
+    return render(request = request, template_name='pages/bills-carrier-form.html', context={"form":context})
+
+# New Product Form view
+def NewProductView(request):
+    context = NewProductForm()
+    return render(request = request, template_name='pages/bills-product-form.html', context={"form":context})
