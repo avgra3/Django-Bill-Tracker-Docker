@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.core import serializers
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.db.models import Sum, Count, Avg, Q, Count, Case, When, F
 from django.db.models.functions import TruncMonth
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -60,3 +60,13 @@ def NewCarrierView(request):
 def NewProductView(request):
     context = NewProductForm()
     return render(request = request, template_name='pages/bills-product-form.html', context={"form":context})
+
+"""
+Detail view to see more details of the bill...
+"""
+class BillListView(ListView):
+    model = BillPaid
+    # format: <app>/<model>_<viewtype>.html
+    template_name = 'pages/BillPaid_listview.html'
+    context_object_name = 'bills'
+    ordering = ['-paidDate']

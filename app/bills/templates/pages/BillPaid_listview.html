@@ -1,0 +1,42 @@
+{% extends "pages/base.html" %}
+{% block content %}
+{% load static %}
+<head>
+    <title>Bills Paid Details</title>
+</head>
+<body>
+    <h1>Paid Bills</h1>
+
+    
+        <table class="table">
+            <tr>
+                <th class="thead">Paid Date</th>
+                <th>Billing ID</th>
+                <th>Notes</th>
+                <th>Total Paid</th>
+            </tr>
+            {% for bill in bills %}
+                <tr>
+                    <td>{{bill.paidDate}}</td>
+                    <td>{{bill.billID_id}}</td>
+                    <td>{{bill.notes}}</td>
+                    <td>${{bill.totalPaid|floatformat:2}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    
+
+    <br>
+    <div>
+        <!-- Link to home page -->
+        <a class="btn" href="{% url 'pages/home.html' %}">To Home page.</a>
+        <!-- Link to monthly breakdown page -->
+        <a class="btn" href="{% url 'bills-mb' %}">To Monthly Breakdown page.</a>
+        <!--This js script is if we are at the bottom of the page and want to easily scrool to the top-->
+        <a class="section2" href="#">Scroll to top</a>
+    </div>
+    
+<!-- Smooth scroll js -->
+<script src="{% static 'bills/smooth-scroll.js' %}"></script>
+
+{% endblock content %}
