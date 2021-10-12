@@ -8,17 +8,18 @@
 <body>
     <h1>New Bill</h1>
     <br>
-    {% if submitted %}
-        <p class="success">
-            New bill has been entered!
-        </p>
-    {% else %}
-        <form action = "" method = "post">
+    <div class="content-section">
+        <form method="POST">
             {% csrf_token %}
-            {{ form|crispy }}
-            <input type="submit" value="Submit">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">New Bill</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Submit</button>
+            </div>
         </form>
-    {% endif %}
+    </div>
     <br>
     <div>
         <!-- Link to home page -->
