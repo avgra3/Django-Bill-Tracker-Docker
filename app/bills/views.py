@@ -81,4 +81,3 @@ class BillListView(ListView):
     template_name = 'pages/BillPaid_listview.html'
     context_object_name = 'bills'
     ordering = ['-paidDate']
-
