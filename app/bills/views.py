@@ -6,7 +6,8 @@ from django.db.models import Sum, Count, Avg, Q, Count, Case, When, F
 from django.db.models.functions import TruncMonth
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
+from django.urls import reverse_lazy
 
 # Import users views
 from users import views as user_views
@@ -54,37 +55,40 @@ def MonthlyBreakdownListView(request):
 
 """ Adding New Bills, Carriers, Products, etc. """
 class BillCreateView(LoginRequiredMixin, CreateView):
-    model = Bill
-    fields = "__all__"
+    form_class = NewBillForm
     template_name = 'pages/bill-form.html'
 
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
+    success_url = reverse_lazy('pages/home.html')
+
     def form_valid(self, form):
-        return redirect('bills-paid')
+        return super().form_valid(form)
 
 class CarrierCreateView(LoginRequiredMixin, CreateView):
-    model = Carrier
-    fields = "__all__"
+    form_class = NewCarrierForm
     template_name = 'pages/carrier-form.html'
 
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
+    success_url = reverse_lazy('pages/home.html')
+
     def form_valid(self, form):
-        return redirect('pages/home.html')
+        return super().form_valid(form)
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
-    model = Product
-    fields = "__all__"
+    form_class = NewProductForm
     template_name = 'pages/product-form.html'
 
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
+    success_url = reverse_lazy('pages/home.html')
+
     def form_valid(self, form):
-        return redirect('pages/home.html')
+        return super().form_valid(form)
 
 """ Listing all available bills in reverse order """
 class BillListView(ListView):
