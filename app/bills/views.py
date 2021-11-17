@@ -30,7 +30,7 @@ def homepage(request):
     paid = BillPaid.objects.all().select_related('billID').order_by('-paidDate')[:5]
 
     context = {"unpaid": unpaid, "paid":paid, "unpaid_total": unpaid_total}
-    return render(request, 'pages/home.html', context=context)
+    return render(request, 'bills/home.html', context=context)
 
 # Average bill view
 def AverageBillPaidView(request):
@@ -43,7 +43,7 @@ def AverageBillPaidView(request):
     # Combines the two items we want to show in view
     context = {"runningAvg": runningAvg,  "monthlyAvg": monthlyAvg}
 
-    return render(request = request, template_name='pages/bills-avg.html', context=context)
+    return render(request = request, template_name='bills/bills-avg.html', context=context)
 
 # Monthly Breakdown view
 # Create a view that summarizes the bills table
@@ -51,41 +51,41 @@ def MonthlyBreakdownListView(request):
     # Will return a grouped breakdown for each month
     context = BillPaid.objects.annotate(month=TruncMonth('paidDate')).values('month').annotate(sums=Sum('totalPaid')).values('month','sums').order_by('month')
     
-    return render(request = request, template_name='pages/bills-mb.html', context={"mb": context})
+    return render(request = request, template_name='bills/bills-mb.html', context={"mb": context})
 
 """ Adding New Bills, Carriers, Products, etc. """
 class BillCreateView(LoginRequiredMixin, CreateView):
     form_class = NewBillForm
-    template_name = 'pages/bill-form.html'
+    template_name = 'bills/bill-form.html'
 
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
-    success_url = reverse_lazy('pages/home.html')
+    success_url = reverse_lazy('bills/home.html')
 
     def form_valid(self, form):
         return super().form_valid(form)
 
 class CarrierCreateView(LoginRequiredMixin, CreateView):
     form_class = NewCarrierForm
-    template_name = 'pages/carrier-form.html'
+    template_name = 'bills/carrier-form.html'
 
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
-    success_url = reverse_lazy('pages/home.html')
+    success_url = reverse_lazy('bills/home.html')
 
     def form_valid(self, form):
         return super().form_valid(form)
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     form_class = NewProductForm
-    template_name = 'pages/product-form.html'
+    template_name = 'bills/product-form.html'
 
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
-    success_url = reverse_lazy('pages/home.html')
+    success_url = reverse_lazy('bills/home.html')
 
     def form_valid(self, form):
         return super().form_valid(form)
@@ -94,6 +94,23 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class BillListView(ListView):
     model = BillPaid
     # format: <app>/<model>_<viewtype>.html
-    template_name = 'pages/BillPaid_listview.html'
+    template_name = 'bills/BillPaid_listview.html'
     context_object_name = 'bills'
-    ordering = ['-paidDate']
+    ordering = ['paidDate']
+
+""" Paying unpaid bills """
+class paidBillDetailView(LoginRequiredMixin, DetailView):
+    model = BillPaid
+    fields = '__all__'
+
+class paidBillUpdateView(LoginRequiredMixin, UpdateView):
+    model = BillPaid
+    fields = '__all__'
+    success_url = reverse_lazy('bills/home.html')
+
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
