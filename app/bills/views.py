@@ -8,6 +8,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+# Import users views
+from users import views as user_views
+
 # Models created
 from .models import BillPaid, Carrier, Bill, Product
 
@@ -55,6 +58,9 @@ class BillCreateView(LoginRequiredMixin, CreateView):
     fields = "__all__"
     template_name = 'pages/bill-form.html'
 
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+
     def form_valid(self, form):
         return redirect('bills-paid')
 
@@ -63,6 +69,9 @@ class CarrierCreateView(LoginRequiredMixin, CreateView):
     fields = "__all__"
     template_name = 'pages/carrier-form.html'
 
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+
     def form_valid(self, form):
         return redirect('pages/home.html')
 
@@ -70,6 +79,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     fields = "__all__"
     template_name = 'pages/product-form.html'
+
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     def form_valid(self, form):
         return redirect('pages/home.html')
