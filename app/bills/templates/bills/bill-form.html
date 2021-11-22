@@ -1,0 +1,33 @@
+{% extends "bills/base.html" %}
+{% block content %}
+{% load static %}
+{% load crispy_forms_tags %} 
+<head>
+    <title>New Bill Form</title>
+</head>
+<body>
+    <h1>New Bill</h1>
+    <br>
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">New Bill</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div>
+        <!-- Link to home page -->
+        <a class="btn" href="{% url 'pages/home.html' %}">Home</a>
+        <!-- Link to averages page -->
+        <a class="btn" href="{% url 'bills-avg' %}">Monthly Averages</a>
+        <!-- Link to monthly breakdown-->
+        <a class="btn" href="{% url 'bills-mb' %}">Monthly Breakdown</a>
+    </div>
+
+{% endblock content %}

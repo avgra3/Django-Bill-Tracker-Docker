@@ -123,3 +123,71 @@ If you would prefer not to use adminer as your method of working with the databa
 - Database: bills
 
 From this connection you will be able to run other SQL scripts.
+
+## Current Development
+
+----------------------------------------------
+
+For current development, we want to accomplish the below
+
+1. Adding a monthly breakdown section with plots _(completed [09/29/2021])_
+2. Adding a form for entering new data
+3. Adding a user sign-in page to enter and use the site.
+
+----------------------------------------------
+
+### Monthly Breakdown
+
+We want to access the shell of our project in order to work to determine to work with our project in an interactive enviornment use the below
+
+    python manage.py shell
+
+You will be greeted with the below
+
+![Django Shell](/images/django-shell.png)
+
+From there, we will work with our _bills_ app, to determine what the best way to implement a monthly breakdown.
+
+    # Import our models from the bills app
+    from bills.models import BillPaid, Bill
+    
+    # Import Trunc month to so that we can truncate months to just the month & year
+    from django.db.models.functions import TruncMonth
+
+    # We want to import a few functions like Sum, Avg and Count
+    from django.db.models import Sum, Count, Avg
+
+    # Setting up the monthly breakdown
+    mb = BillPaid.objects.annotate(month=TruncMonth('paidDate')).values('month').annotate(sums=Sum('totalPaid')).values('month','sums').order_by('month')
+
+The above gives us the setup we need to make a view. Going back to the shell, if we show the results from _'mb'_ we can see the below:
+
+![MB-django-shell](/images/mb-django-shell.png)
+
+As we can see, there are some results, where we have the output in the format of _'YYYY'_, *'M'*, _'D'_. When we add our view to the html template, we can format it so that we can only show the month and year.
+
+Now if we hop into our [views.py](/app/bills/views.py) file in our bills app, we can add our file as below.
+
+![Monthly-Breakdown-View](/images/mb-view.png)
+
+Now we are ready to create our html template for the monthly breakdown. For ease, refer to the [bills-mb.html](/app/bills/templates/pages/bills.html) for the full file outline. Also, make sure to update the [urls.py](/app/bills/urls.py) file so that we can access the view from our django site. If all were updated properly, you should be able to see the breakdown page similar to the below.
+
+![MB-web-page](/images/mb-webpage.png)
+
+**_Note:_** Your view may differ based on your entered data. As we can see from the table, there are only two entries.
+
+----------------------------------------------
+
+### Adding Forms
+
+To add a form that uses the input of our models, we can create a new file in our app called [forms.py](/app/bills/forms.py). In this file we can specify which model we want to use. In our case, we want to be able to add _**new**_ bills, carriers, and products.
+
+![forms.py](/images/create-forms-file.png)
+
+We specify that we want to add all fields into our form.
+
+Note that for all fields in the model that have _**editable=False**, the field will not appear on our form.
+
+In our case, the [views.py](/app/bills/views.py) file will look like the below (make sure to import the form into your views file or else you will get an error when running the app).
+
+![Form-Views](/images/create-forms-view.png)

@@ -1,0 +1,59 @@
+{% extends "bills/base.html" %}
+{% block content %}
+    <!-- The below shows all pending bills and if there is no pending bills, it will show a message -->
+    
+    {% if  unpaid.count > 0 %}
+    <div style="text-align:center">
+    <h1>Pending Bills</h2>
+    <br>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Bill ID#</th>
+                <th>Total Paid</th>
+                <th>Notes</th>
+            </tr> 
+            {% for up in unpaid %}
+            <tr>
+                <td>{{up.billID}}</td>
+                <td>${{up.totalPaid}}</td>
+                <td>{{up.notes}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td>Pending Total 👉🏽</td>
+                <td>${{unpaid_total.totalPaid__sum}}</td>
+                <td>👈🏽</td>
+            </tr>
+        </table>
+    </div>
+    </div>
+        {% else %}
+        <h1>No pending bills 😀</h2>
+        {% endif %}
+    
+
+    <br>
+
+    <br>
+    {% if  paid.count > 0 %}
+    <div class="table-responsive">
+        <h2 style="text-align:center">Previous 5 Bills</h2>
+        <table class="table">
+            <tr>
+                <th>Bill ID</th>
+                <th class="thead">Total Paid</th>
+            </tr>
+            {% for p in paid %}
+            <tr>
+                <td>{{p.billID}}</td>
+                <td>${{p.totalPaid}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+
+{% endblock content %}
+
+

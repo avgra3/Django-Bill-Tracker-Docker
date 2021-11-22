@@ -1,23 +1,36 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.core import serializers
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, CreateView
 from django.db.models import Sum, Count, Avg, Q, Count, Case, When, F
 from django.db.models.functions import TruncMonth
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView
+from django.urls import reverse_lazy
+
+# Import users views
+from users import views as user_views
 
 # Models created
-from .models import BillPaid, Carrier, Bill
+from .models import BillPaid, Carrier, Bill, Product
+
+# Forms created
+from .forms import NewBillForm, NewCarrierForm, NewProductForm
 
 # Homepage view.
 def homepage(request):
     # Shows any unpaid bills:
     unpaid = BillPaid.objects.all().filter(paidBool=0).values('billID', 'totalPaid', 'notes')
     
+    # Shows summed amount for total due
+    unpaid_total = BillPaid.objects.all().filter(paidBool=0).aggregate(Sum('totalPaid'))
+    
     # Show previous 5 bills
     paid = BillPaid.objects.all().select_related('billID').order_by('-paidDate')[:5]
 
-    context = {"unpaid": unpaid, "paid":paid}
-    return render(request, 'pages/home.html', context=context)
+    context = {"unpaid": unpaid, "paid":paid, "unpaid_total": unpaid_total}
+    return render(request, 'bills/home.html', context=context)
 
 # Average bill view
 def AverageBillPaidView(request):
@@ -30,6 +43,74 @@ def AverageBillPaidView(request):
     # Combines the two items we want to show in view
     context = {"runningAvg": runningAvg,  "monthlyAvg": monthlyAvg}
 
-    return render(request = request, template_name='pages/bills-avg.html', context=context)
+    return render(request = request, template_name='bills/bills-avg.html', context=context)
 
+# Monthly Breakdown view
+# Create a view that summarizes the bills table
+def MonthlyBreakdownListView(request):
+    # Will return a grouped breakdown for each month
+    context = BillPaid.objects.annotate(month=TruncMonth('paidDate')).values('month').annotate(sums=Sum('totalPaid')).values('month','sums').order_by('month')
+    
+    return render(request = request, template_name='bills/bills-mb.html', context={"mb": context})
+
+""" Adding New Bills, Carriers, Products, etc. """
+class BillCreateView(LoginRequiredMixin, CreateView):
+    form_class = NewBillForm
+    template_name = 'bills/bill-form.html'
+
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+
+    success_url = reverse_lazy('bills/home.html')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+class CarrierCreateView(LoginRequiredMixin, CreateView):
+    form_class = NewCarrierForm
+    template_name = 'bills/carrier-form.html'
+
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+
+    success_url = reverse_lazy('bills/home.html')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    form_class = NewProductForm
+    template_name = 'bills/product-form.html'
+
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+
+    success_url = reverse_lazy('bills/home.html')
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+""" Listing all available bills in reverse order """
+class BillListView(ListView):
+    model = BillPaid
+    # format: <app>/<model>_<viewtype>.html
+    template_name = 'bills/BillPaid_listview.html'
+    context_object_name = 'bills'
+    ordering = ['paidDate']
+
+""" Paying unpaid bills """
+class paidBillDetailView(LoginRequiredMixin, DetailView):
+    model = BillPaid
+    fields = '__all__'
+
+class paidBillUpdateView(LoginRequiredMixin, UpdateView):
+    model = BillPaid
+    fields = '__all__'
+    success_url = reverse_lazy('bills/home.html')
+
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 

@@ -1,0 +1,32 @@
+{% extends "bills/base.html" %}
+{% block content %}
+{% load static %}
+{% load crispy_forms_tags %} 
+
+<h1>All Bills</h1>
+<br>
+    <div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <table class="table">
+                    <tr>
+                        <th>Billing Info</th>
+                        <th>Paid Date</th>
+                        <th>Notes</th>
+                        <th>Paid Boolean</th>
+                        <th>Total Paid</th>                        
+                    </tr>
+                   
+                        <tr>
+                            <td>{{bill.billID}}</td>
+                            <td>{{bill.paidDate}}</td>
+                            <td>{{bill.notes}}</td>
+                            <td>{{bill.paidBool}}</td>
+                            <td>{{bill.totalPaid}}</td>
+                        <tr>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
