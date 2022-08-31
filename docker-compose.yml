@@ -15,6 +15,9 @@ services:
         python manage.py runserver 0.0.0.0:8100"
     depends_on:
       - db
+    networks:
+      billing:
+        ipv4_address: 192.168.92.21
 
   db:
     image: mariadb:10.5
@@ -29,6 +32,9 @@ services:
       - 33066:3306
     volumes:
       - .dbdata:/var/lib/mysql
+    networks:
+      billing:
+        ipv4_address: 192.168.92.22
 
   adminer:
     image: adminer
@@ -40,7 +46,13 @@ services:
       - ./adminer/:/adminer/
     depends_on:
       - db
+    networks:
+      billing:
+        ipv4_address: 192.168.92.23
 
-
-
-      
+networks:
+  billing:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.92.0/24"

@@ -54,6 +54,29 @@
     </div>
     {% endif %}
 
+    <br>
+
+    <div class="table-responsive">
+        <h2 style="text-align:center">Average Bill Amount</h2>
+        <table class="table">
+            <tr>
+                <th>Biller</th>
+                <th class="thead">Average Paid</th>
+            </tr>
+            {% for a in combinedAvg %}
+                <tr>
+                    <td>{{a.carrierName}}</td>
+                    <td>${{a.avgCarrierAmount}}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>Total Average bill amount 👉🏽</td>
+                <td>${{averages_total.avgCarrierAmount__sum}}</td>
+                <td>👈🏽</td>
+            </tr>
+        </table>
+    </div>
+
 {% endblock content %}
 
 
