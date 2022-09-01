@@ -31,19 +31,13 @@ class Round(Func):
     template = "%(function)s(%(expressions)s, 2)"
 
 
-"""
-# Class to have month-year
-class MonthYear(Func):
-    function1 = "MONTH"
-    function2 = "YEAR"
-    template = "%(function1)s(%(expressions)s) - %(function2)s(%(expressions)s)"
-"""
-
 # Homepage view.
 def homepage(request):
     # Shows any unpaid bills:
     unpaid = (
-        BillPaid.objects.all().filter(paidBool=0).values("billID", "totalPaid", "notes")
+        BillPaid.objects.all()
+        .filter(paidBool=0)
+        .values("paidID", "billID", "totalPaid", "notes")
     )
 
     # Shows summed amount for total due
@@ -203,7 +197,7 @@ class BillListView(ListView):
     # format: <app>/<model>_<viewtype>.html
     template_name = "bills/BillPaid_listview.html"
     context_object_name = "bills"
-    ordering = ["paidDate"]
+    ordering = ["-paidDate"]
 
 
 """ Paying unpaid bills """
