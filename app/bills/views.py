@@ -31,6 +31,14 @@ class Round(Func):
     template = "%(function)s(%(expressions)s, 2)"
 
 
+"""
+# Class to have month-year
+class MonthYear(Func):
+    function1 = "MONTH"
+    function2 = "YEAR"
+    template = "%(function1)s(%(expressions)s) - %(function2)s(%(expressions)s)"
+"""
+
 # Homepage view.
 def homepage(request):
     # Shows any unpaid bills:
