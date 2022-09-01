@@ -3,8 +3,8 @@
     <!-- The below shows all pending bills and if there is no pending bills, it will show a message -->
     
     {% if  unpaid.count > 0 %}
-    <div style="text-align:center">
-    <h1>Pending Bills</h2>
+    <div class="table-responsive">
+    <h2 style="text-align:center">Pending Bills</h2>
     <br>
     <div class="table-responsive">
         <table class="table">
@@ -15,7 +15,7 @@
             </tr> 
             {% for up in unpaid %}
             <tr>
-                <td>{{up.billID}}</td>
+                <td><a class="btn" href="{% url 'bill-paid-update' up.paidID %}">{{up.billID}}</a></td>
                 <td>${{up.totalPaid}}</td>
                 <td>{{up.notes}}</td>
             </tr>
