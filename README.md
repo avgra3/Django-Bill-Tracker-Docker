@@ -40,10 +40,10 @@ Now we move to our _docker-compose.yml_ file (shown below). We first specify the
 
 Once you have completed the above run the following in your terminal, making sure to be in the same directory as your _Dockerfile_ and _docker-compose.yml_ file.
 
-    docker-compose build
-    docker-compose up
-
-The first command may take a few momemnts to build the container. You should see directories being added to your host machine as this is processed.
+```
+docker-compose build
+docker-compose up
+```
 
 ----------------------------------------------
 
@@ -122,7 +122,7 @@ If you would prefer not to use adminer as your method of working with the databa
 - Port: 33066
 - Database: bills
 
-From this connection you will be able to run other SQL scripts.
+From this connection you will be able to run other SQL scripts. These are what are used for this project, be sure to update the `.env` file with the appropriate configuration names for your database and Django Secret key.
 
 ## Current Development
 
