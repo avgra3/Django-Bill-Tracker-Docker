@@ -2,4 +2,4 @@ excluded/
 .vscode
 .dbdata/
 app/app/.env
-.dbdata/*
+.dbdata/
