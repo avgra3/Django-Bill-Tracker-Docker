@@ -1,3 +1,4 @@
 excluded/
 .vscode
 .dbdata/
+app/app/.env

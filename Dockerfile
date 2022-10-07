@@ -7,7 +7,7 @@ RUN apk update \
     && apk add --virtual build-deps gcc python3-dev musl-dev \
     && apk add --no-cache mariadb-dev
 
-COPY ./requirements.txt /requirements.txt
+COPY app/requirements.txt /requirements.txt
 RUN pip install -r requirements.txt
 
 RUN mkdir /app
