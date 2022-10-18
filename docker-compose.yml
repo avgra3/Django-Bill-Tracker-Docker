@@ -5,7 +5,7 @@ services:
     container_name: BillingApp
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./app
     volumes:
       - ./app:/app
     ports:
