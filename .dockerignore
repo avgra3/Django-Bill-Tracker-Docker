@@ -4,3 +4,6 @@ README.md
 /sql_commands
 /images
 /.vscode
+app/app/__pycache__
+app/bills/__pycache__
+app/users/__pycache__
