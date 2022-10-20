@@ -1,8 +1,9 @@
 excluded/
 .vscode
 .dbdata/
-app/app/.env
-app/app/.env
 app/app/__pycache__
 app/bills/__pycache__
 app/users/__pycache__
+*/.env
+db/
+app/.env
