@@ -2,3 +2,4 @@ Django>=3.2.5,<3.3.0
 mysqlclient==2.0.3
 django-crispy-forms
 python-decouple
+gunicorn>=20.1.0,<20.2.0
