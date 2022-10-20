@@ -7,51 +7,69 @@ services:
       context: .
       dockerfile: ./app
     volumes:
-      - ./app:/app
+      - static:/static
+    env_file:
+      - ./app/.env
+    build:
+      context: ./app
     ports:
-      - "8100:8100"
-    command: >
-      sh -c "python -m pip install --upgrade pip &&
-        pip install -r requirements.txt
-        python manage.py makemigrations &&
-        python manage.py migrate &&
-        python manage.py runserver 0.0.0.0:8100"
+      - "8000:8000"
     depends_on:
       - db
     networks:
       billing:
         ipv4_address: 192.168.92.21
 
+  proxy:
+    container_name: BillingProxy
+    build: ./proxy
+    volumes:
+      - static:/static
+    ports:
+      - "8001:80"
+    depends_on:
+      - app
+    networks:
+      billing:
+        ipv4_address: 192.168.92.22
+  
   db:
     image: mariadb:10.5
     container_name: BillingDB
     restart: always
     environment:
       MYSQL_DATABASE: bills
+      MYSQL_ROOT_HOST: roots
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
+      MARIADB_MYSQL_LOCALHOST_USER: admin
+      MARIADB_MYSQL_LOCALHOST_GRANTS: admin
     ports:
-      - 33066:3306
+      - "8002:3306"
     volumes:
       - .dbdata:/var/lib/mysql
     networks:
       billing:
-        ipv4_address: 192.168.92.22
+        ipv4_address: 192.168.92.23
 
   adminer:
     image: adminer
     container_name: BillingAdminer
     restart: always
     ports:
-      - 8080:8080
+      - 8003:8080
     volumes:
       - ./adminer/:/adminer/
     depends_on:
       - db
     networks:
       billing:
-        ipv4_address: 192.168.92.23
+        ipv4_address: 192.168.92.24
+
+volumes:
+  .dbdata:
+  static:
 
 networks:
   billing:
