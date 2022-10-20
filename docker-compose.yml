@@ -2,7 +2,10 @@ version: '3'
 
 services:
   app:
-    container_name: BillingApp    
+    container_name: BillingApp
+    build:
+      context: .
+      dockerfile: ./app
     volumes:
       - static:/static
     env_file:

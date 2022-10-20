@@ -1,5 +1,7 @@
 FROM python:3.9-alpine
 
+LABEL org.opencontainers.image.authors="Above Average Design Ltd"
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
