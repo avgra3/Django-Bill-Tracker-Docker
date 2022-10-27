@@ -16,21 +16,21 @@
             {% for up in unpaid %}
             <tr>
                 <td><a class="btn" href="{% url 'bill-paid-update' up.paidID %}">{{up.billID}}</a></td>
-                <td>${{up.totalPaid}}</td>
+                <td>${{up.totalPaid|floatformat:2}}</td>
                 <td>{{up.notes}}</td>
             </tr>
             {% endfor %}
             <tr>
                 <td>Pending Total 👉🏽</td>
-                <td>${{unpaid_total.totalPaid__sum}}</td>
+                <td>${{unpaid_total.grandTotal|floatformat:2}}</td>
                 <td>👈🏽</td>
             </tr>
         </table>
     </div>
     </div>
-        {% else %}
-        <h1>No pending bills 😀</h2>
-        {% endif %}
+    {% else %}
+    <h1>No pending bills 😀</h2>
+    {% endif %}
     
 
     <br>

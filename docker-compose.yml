@@ -8,6 +8,9 @@ services:
       - static:/static
     env_file:
       - ./app/.env
+    command: >
+      sh -c "python manage.py collectstatic --no-input"
+
     ports:
       - "8000:8000"
     depends_on:

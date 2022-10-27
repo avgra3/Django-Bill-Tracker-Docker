@@ -49,8 +49,10 @@ def homepage(request):
     )
 
     # Shows summed amount for total due
-    unpaid_total = BillPaid.objects.all().filter(paidBool=0).aggregate(Sum("totalPaid"))
-
+    unpaid_total = (
+        BillPaid.objects.all().filter(paidBool=0).aggregate(grandTotal=Sum("totalPaid"))
+    )
+    # unpaid_total = 10
     # Show previous 5 bills
     paid = BillPaid.objects.all().select_related("billID").order_by("-paidDate")[:5]
 
