@@ -23,7 +23,7 @@ from users import views as user_views
 from .models import BillPaid, Carrier, Bill, Product
 
 # Forms created
-from .forms import NewBillForm, NewCarrierForm, NewProductForm
+from .forms import NewBillForm, NewCarrierForm, NewProductForm, UpdateBillForm
 
 # Class to have output rounded, used for averages
 class Round(Func):
@@ -219,8 +219,10 @@ class paidBillDetailView(LoginRequiredMixin, DetailView):
 
 
 class paidBillUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = UpdateBillForm
+    template_name = "bills/bill-form.html"
+    login_url = "/login/"
     model = BillPaid
-    fields = "__all__"
     success_url = reverse_lazy("bills/home.html")
 
     login_url = "/login/"
