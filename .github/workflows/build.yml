@@ -25,6 +25,6 @@ jobs:
       env:
         REPO: self
         BRANCH: build # Branch we want to build to
-        FOLDER: dist
+        #FOLDER: dist
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         MESSAGE: "Build: ({sha}) {msg}" # Commit message
