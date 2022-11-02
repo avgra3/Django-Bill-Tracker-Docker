@@ -18,7 +18,7 @@ jobs:
       uses: KengoTODA/actions-setup-docker-compose@main
       with:
         version: '1.29.2'
-        run: docker-compose build . --force-recreate
+      #run: docker-compose build . --force-recreate
 
     - name: Build
       uses: s0/git-publish-subdir-action@develop
