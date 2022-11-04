@@ -1,0 +1,11 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block content %}
+
+<!-- Adding in link to upload page -->
+<a href="upload-csv/">Upload a CSV file</a>
+
+
+<!-- Brings in the base Django Admin information -->
+{{ block.super }}
+{% endblock %}
