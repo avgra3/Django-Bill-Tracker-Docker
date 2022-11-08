@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build and Push
+    steps:
+    - name: git-checkout
+      uses: actions/checkout@v3
+      
+    - name: Build the Docker images
+      uses: KengoTODA/actions-setup-docker-compose@main
+      with:
+        version: '1.29.2'
+      #run: docker-compose build . --force-recreate
+
+    - name: Build
+      uses: s0/git-publish-subdir-action@develop
+      env:
+        REPO: self
+        BRANCH: build # Branch we want to build to
+        FOLDER: .
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        MESSAGE: "Build: ({sha}) {msg}" # Commit message
