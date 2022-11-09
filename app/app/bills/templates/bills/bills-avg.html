@@ -25,9 +25,9 @@
             </tr>
             {% for car in monthlyAvg %}
                 <tr>
-                    <td>{{car.month}} - {{car.year}}</td>
+                    <td>{{car.month|date:"M-Y"}}</td>
                     <td>{{car.carrierName}}</td>
-                    <td>${{car.avgCarrierAmount}}</td>
+                    <td>${{car.avgCarrierAmount|floatformat:2}}</td>
                 </tr>
             {% endfor %}
         </table>

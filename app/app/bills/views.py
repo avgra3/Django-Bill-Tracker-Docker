@@ -109,13 +109,17 @@ def AverageBillPaidView(request):
 
     # We want to get the average cost for each carrier/utility, by year and month
     monthlyAvg = (
-        Bill.objects.select_related("carrierID")
-        .annotate(month=Extract("dueDate", "month"), year=Extract("dueDate", "year"))
-        .values("carrierID", "year", "month")
-        .annotate(avgCarrierAmount=Round(Avg(F("charge") + F("anc_fees") + F("taxes"))))
-        .order_by("carrierID")
-        .values("year", "month", "carrierID", "avgCarrierAmount")
-        .order_by("year", "month")
+        Bill.objects.select_related("related bill", "related carrier")
+        .prefetch_related("related bill", "related carrier")
+        .annotate(month=TruncMonth("dueDate"))
+        .values("month", "carrierID_id")
+        .annotate(
+            avgCarrierAmount=Round(
+                Avg(F("charge") + F("credit") + F("anc_fees") + F("charge"))
+            )
+        )
+        .values("month", "avgCarrierAmount", "carrierID_id")
+        .order_by("month", "carrierID_id")
     )
 
     carriers = (
