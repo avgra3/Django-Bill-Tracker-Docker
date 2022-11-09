@@ -1,8 +1,10 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from .models import Carrier, Product, Bill, BillPaid
 from django.urls import path
 from django import forms
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 # Creates the CSV uploader
 class CsvImportForm(forms.Form):
@@ -30,6 +32,12 @@ class ProfileBill(admin.ModelAdmin):
             # gets the csv file uploaded from upload-csv
             csv_file = request.FILES["csv_upload"]
 
+            if not csv_file.name.endswith(".csv"):
+                messages.warning(
+                    request, "Incorrect file type was uploaded. Please use a CSV file."
+                )
+                return HttpResponseRedirect(request.path_info)
+
             # Formats the file to UTF-8 just incase
             file_data = csv_file.read().decode("utf-8")
 
@@ -54,6 +62,9 @@ class ProfileBill(admin.ModelAdmin):
                     taxes=fields[6],
                     credit=fields[7],
                 )
+            url = reverse("admin:index")
+            return HttpResponseRedirect(url)
+
         # department_id = Department.objects.get(password = password, department_name = department_name)
         form = CsvImportForm()
         data = {"form": form}
